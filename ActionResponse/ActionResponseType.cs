@@ -1,4 +1,4 @@
-﻿namespace ActionResponse
+﻿namespace ReActionResponse.Core
 {
     public enum ActionResponseType
     {

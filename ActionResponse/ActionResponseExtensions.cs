@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
 
-namespace ActionResponse
+namespace ReActionResponse.Core.Extensions
 {
     public static partial class ActionResponseExtensions
     {
@@ -179,26 +179,6 @@ namespace ActionResponse
             response.Message += string.IsNullOrEmpty(response.Message)
                 || response.Message.EndsWith(Environment.NewLine)
                 ? message : Environment.NewLine + message;
-            return response;
-        }
-
-        public static ActionResult FinishAction<T>(this ActionResponse<T> actionResponse)
-        {
-            var response = new ObjectResult(actionResponse)
-            {
-                StatusCode = actionResponse.ResultCode
-            };
-
-            return response;
-        }
-
-        public static ActionResult FinishAction(this ActionResponse actionResponse)
-        {
-            var response = new ObjectResult(actionResponse)
-            {
-                StatusCode = actionResponse.ResultCode
-            };
-
             return response;
         }
     }
