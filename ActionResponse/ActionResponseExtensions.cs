@@ -67,6 +67,7 @@ namespace ReActionResponse.Core.Extensions
             };
         }
 
+
         public static T? GetData<T>(this ActionResponse<T> actionResponse)
         {
             return actionResponse.Data;
@@ -81,6 +82,24 @@ namespace ReActionResponse.Core.Extensions
         {
             Data = actionResponse.Data;
             return actionResponse.ActionResponseType == ActionResponseType.Success;
+        }
+
+        public static bool IsError(this ActionResponse actionResponse)
+        {
+            return actionResponse.ActionResponseType == ActionResponseType.Error;
+        }
+
+        public static bool IsError(this ActionResponse actionResponse, out ActionResponse response)
+        {
+            response = actionResponse;
+            return actionResponse.ActionResponseType == ActionResponseType.Error;
+        }
+
+        public static bool IsError<T>(this ActionResponse<T> actionResponse, out ActionResponse<T> response, out T? Data)
+        {
+            response = actionResponse;
+            Data = actionResponse.Data;
+            return actionResponse.ActionResponseType == ActionResponseType.Error;
         }
 
         public static bool IsSuccessAndHasData<T>(this ActionResponse<T> actionResponse, out T? Data)
@@ -116,6 +135,62 @@ namespace ReActionResponse.Core.Extensions
         {
             actionResponse = response;
             return response.ActionResponseType != ActionResponseType.Success;
+        }
+
+        public static ActionResponse SetWarningMessage(this ActionResponse response, string errorMessage)
+        {
+            if (response.IsNotSuccess())
+            {
+                response.AppendWarningMessage(errorMessage);
+                return response;
+            }
+
+            response.ActionResponseType = ActionResponseType.Warning;
+            response.ResultCode = 299;
+            response.Message = errorMessage;
+            return response;
+        }
+
+        public static ActionResponse<T> SetWarningMessage<T>(this ActionResponse<T> response, string errorMessage)
+        {
+            if (response.IsNotSuccess())
+            {
+                response.AppendWarningMessage(errorMessage);
+                return response;
+            }
+
+            response.ActionResponseType = ActionResponseType.Error;
+            response.ResultCode = 500;
+            response.Message = errorMessage;
+            return response;
+        }
+
+        public static ActionResponse AppendWarningMessage(this ActionResponse response, string errorMessage)
+        {
+            if (response.ActionResponseType == ActionResponseType.Success)
+            {
+                response.ActionResponseType = ActionResponseType.Warning;
+                response.ResultCode = 299;
+            }
+
+            response.Message += string.IsNullOrEmpty(response.Message)
+                || response.Message.EndsWith(Environment.NewLine)
+                ? errorMessage : Environment.NewLine + errorMessage;
+            return response;
+        }
+
+        public static ActionResponse<T> AppendWarningMessage<T>(this ActionResponse<T> response, string errorMessage)
+        {
+            if (response.ActionResponseType == ActionResponseType.Success)
+            {
+                response.ActionResponseType = ActionResponseType.Warning;
+                response.ResultCode = 299;
+            }
+
+            response.Message += string.IsNullOrEmpty(response.Message)
+                || response.Message.EndsWith(Environment.NewLine)
+                ? errorMessage : Environment.NewLine + errorMessage;
+            return response;
         }
 
         public static ActionResponse SetErrorMessage(this ActionResponse response, string errorMessage)
@@ -179,6 +254,47 @@ namespace ReActionResponse.Core.Extensions
             response.Message += string.IsNullOrEmpty(response.Message)
                 || response.Message.EndsWith(Environment.NewLine)
                 ? message : Environment.NewLine + message;
+            return response;
+        }
+
+        public static ActionResponse<T> Convert<T>(this ActionResponse response)
+        {
+            return new ActionResponse<T>(response);
+        }
+
+        public static ActionResponse Merge(this ActionResponse @response, ActionResponse newResponse)
+        {
+            if (newResponse.ResultCode > response.ResultCode)
+            {
+                response.ActionResponseType = newResponse.ActionResponseType;
+                response.ResultCode = newResponse.ResultCode;
+            }
+
+            if (!string.IsNullOrWhiteSpace(newResponse.Message))
+            {
+                response.Message += string.IsNullOrEmpty(response.Message)
+                    || response.Message.EndsWith(Environment.NewLine)
+                    ? newResponse.Message : Environment.NewLine + newResponse.Message;
+            }
+
+            return response;
+        }
+
+        public static ActionResponse<T> Merge<T>(this ActionResponse<T> @response, ActionResponse newResponse)
+        {
+            if (newResponse.ResultCode > response.ResultCode)
+            {
+                response.ActionResponseType = newResponse.ActionResponseType;
+                response.ResultCode = newResponse.ResultCode;
+            }
+
+            if (!string.IsNullOrWhiteSpace(newResponse.Message))
+            {
+                response.Message += string.IsNullOrEmpty(response.Message)
+                    || response.Message.EndsWith(Environment.NewLine)
+                    ? newResponse.Message : Environment.NewLine + newResponse.Message;
+            }
+
             return response;
         }
     }
