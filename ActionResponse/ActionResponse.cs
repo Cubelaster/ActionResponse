@@ -48,7 +48,7 @@
 
         public static ActionResponse<T> Warning<T>(T? Data = default, string? Message = null, int? Code = 299)
         {
-            return ActionResponse<T>.Success(Data, Message, Code);
+            return ActionResponse<T>.Warning(Data, Message, Code);
         }
     }
 
