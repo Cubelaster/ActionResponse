@@ -262,6 +262,14 @@ namespace ReActionResponse.Core.Extensions
             return new ActionResponse<T>(response);
         }
 
+        public static ActionResponse<T> Convert<T>(this ActionResponse response, T data)
+        {
+            return new ActionResponse<T>(response)
+            {
+                Data = data
+            };
+        }
+
         public static ActionResponse Merge(this ActionResponse @response, ActionResponse newResponse)
         {
             if (newResponse.ResultCode > response.ResultCode)
