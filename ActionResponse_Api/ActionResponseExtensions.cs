@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using ReActionResponse.Core;
 
 namespace ReActionResponse.Api
@@ -35,6 +36,22 @@ namespace ReActionResponse.Api
             };
 
             return response;
+        }
+
+        public static IResult ResultsFinishAction<T>(this ActionResponse<T> actionResponse)
+        {
+            // 204 has to be empty, otherwise it's error on response
+            return actionResponse.ResultCode == 204
+                ? Results.NoContent()
+                : Results.Json(data: actionResponse, statusCode: actionResponse.ResultCode);
+        }
+
+        public static IResult ResultsFinishAction(this ActionResponse actionResponse)
+        {
+            // 204 has to be empty, otherwise it's error on response
+            return actionResponse.ResultCode == 204
+                ? Results.NoContent()
+                : Results.Json(data: actionResponse, statusCode: actionResponse.ResultCode);
         }
     }
 }
