@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ReActionResponse.Core;
 
 namespace ReActionResponse.Api
@@ -52,6 +51,22 @@ namespace ReActionResponse.Api
             return actionResponse.ResultCode == 204
                 ? Results.NoContent()
                 : Results.Json(data: actionResponse, statusCode: actionResponse.ResultCode);
+        }
+
+        public static IResult TypedResultsFinishAction<T>(this ActionResponse<T> actionResponse)
+        {
+            // 204 has to be empty, otherwise it's error on response
+            return actionResponse.ResultCode == 204
+                ? TypedResults.NoContent()
+                : TypedResults.Json<ActionResponse<T>>(data: actionResponse, statusCode: actionResponse.ResultCode);
+        }
+
+        public static IResult TypedResultsFinishAction(this ActionResponse actionResponse)
+        {
+            // 204 has to be empty, otherwise it's error on response
+            return actionResponse.ResultCode == 204
+                ? TypedResults.NoContent()
+                : TypedResults.Json<ActionResponse>(data: actionResponse, statusCode: actionResponse.ResultCode);
         }
     }
 }
