@@ -13,11 +13,11 @@
         <PackageTags>C#, Response, API</PackageTags>
         <NeutralLanguage>en</NeutralLanguage>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <Version>2.0.1</Version>
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <IsPackable>true</IsPackable>
         <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
         <PackageOutputPath>bin\Nuget</PackageOutputPath>
+        <Version>2.0.1</Version>
     </PropertyGroup>
 
     <ItemGroup>

@@ -13,7 +13,7 @@
         <PackageTags>C#, Response, API</PackageTags>
         <NeutralLanguage>en</NeutralLanguage>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <PackageVersion>2.0.1</PackageVersion>
+        <Version>2.0.1</Version>
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <IsPackable>true</IsPackable>
         <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
