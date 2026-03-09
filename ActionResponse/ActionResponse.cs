@@ -69,7 +69,7 @@
         {
             return new ActionResponse<T>
             {
-                Data = Data != null ? Data : default,
+                Data = Data,
                 Message = Message,
                 ActionResponseType = ActionResponseType.Success,
                 ResultCode = Code
@@ -80,7 +80,7 @@
         {
             return new ActionResponse<T>
             {
-                Data = Data != null ? Data : default,
+                Data = Data,
                 Message = Message,
                 ActionResponseType = ActionResponseType.Error,
                 ResultCode = Code
@@ -91,7 +91,7 @@
         {
             return new ActionResponse<T>
             {
-                Data = Data != null ? Data : default,
+                Data = Data,
                 Message = Message,
                 ActionResponseType = ActionResponseType.Warning,
                 ResultCode = Code
